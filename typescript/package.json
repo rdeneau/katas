@@ -1,0 +1,25 @@
+{
+  "name": "kata-template-typescript",
+  "version": "1.0.0",
+  "description": "Template to write a coding kata in TypeScript",
+  "main": "main.ts",
+  "scripts": {
+    "test": "mocha --opts mocha.opts && rm -rf test",
+    "tdd": "mocha --opts mocha.opts --watch"
+  },
+  "author": "Romain Deneau",
+  "license": "ISC",
+  "dependencies": {
+    "tslib": "^1.8.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.6",
+    "@types/mocha": "^2.2.44",
+    "chai": "^4.1.2",
+    "codelyzer": "^4.0.1",
+    "mocha": "^4.0.1",
+    "tslint": "^5.8.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.6.2"
+  }
+}
