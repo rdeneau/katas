@@ -1,13 +1,7 @@
 import { expect } from 'chai';
-import { initGlobals } from './global';
+import './global'; // To do once at app bootstrapping
 
-initGlobals();
-
-describe('global.s', () => {
-    interface Foo {
-        bar?: string;
-    }
-
+describe('global s()', () => {
     it('should replace null with empty object', () => {
         const result = s(null);
         expect(result).to.eql({});
@@ -25,7 +19,7 @@ describe('global.s', () => {
     });
 
     it('should preserve defined object', () => {
-        const object: Foo = { bar: 'a' };
+        const object = { bar: 'a' };
         const result = s(object);
         expect(result).to.eql(object);
     });

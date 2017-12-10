@@ -3,10 +3,11 @@ function _s<T>(object: T | null, defaultValue: T = {} as T) : T {
         ? defaultValue
         : object as T;
 }
-// Global scope augmentation
-declare var global: NodeJS.Global; // Via npm package "@types/node"
-declare var window: Window;
 
-export function initGlobals() {
-    ((window || global) as any).s = _s;
-}
+// Global declaration
+declare var s: typeof _s;
+
+// Global scope augmentation
+var window = window || null;
+const _global = (window || global) as any;
+_global.s = _s;
