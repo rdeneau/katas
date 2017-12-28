@@ -1,6 +1,7 @@
-﻿using Kata.Prod;
-using NFluent;
-using Xunit;
+﻿using System;
+using FsCheck;
+using FsCheck.Xunit;
+using Kata.Prod;
 
 namespace Kata.Tests
 {
@@ -8,48 +9,90 @@ namespace Kata.Tests
     {
         public class GenerateShould
         {
-            [Theory]
-            [InlineData(1)]
-            [InlineData(2)]
-            [InlineData(4)]
-            public void Return_The_Given_Number_When_Not_Divisible_By_3_And_5(int number)
+            [Property(Arbitrary = new []{ typeof(Multiples.Others) })]
+            public bool Return_The_Given_Number_When_Not_Divisible_By_3_And_5(int number)
             {
-                var result = FizzBuzz.Generate(number);
-                Check.That(result)
-                     .Equals($"{number}");
+                return FizzBuzz.Generate(number) == $"{number}";
             }
 
-            [Theory]
-            [InlineData(3)]
-            [InlineData(6)]
-            [InlineData(9)]
-            public void Fizz_Given_A_Number_When_Divisible_By_3_But_Not_By_5(int number)
+            [Property(Arbitrary = new []{ typeof(Multiples.Of3Not5) })]
+            public bool Fizz_Given_A_Number_When_Divisible_By_3_But_Not_By_5(int number)
             {
-                var result = FizzBuzz.Generate(number);
-                Check.That(result)
-                     .Equals("Fizz");
+                return FizzBuzz.Generate(number) == "Fizz";
             }
 
-            [Theory]
-            [InlineData(5)]
-            [InlineData(10)]
-            [InlineData(20)]
-            public void Buzz_Given_A_Number_When_Divisible_By_5_But_Not_By_3(int number)
+            [Property(Arbitrary = new []{ typeof(Multiples.Of5Not3) })]
+            public bool Buzz_Given_A_Number_When_Divisible_By_5_But_Not_By_3(int number)
             {
-                var result = FizzBuzz.Generate(number);
-                Check.That(result)
-                     .Equals("Buzz");
+                return FizzBuzz.Generate(number) == "Buzz";
             }
 
-            [Theory]
-            [InlineData(15)]
-            [InlineData(30)]
-            [InlineData(45)]
-            public void Buzz_Given_A_Number_When_Divisible_By_3_And_By_5(int number)
+            [Property(Arbitrary = new []{ typeof(Multiples.Of3And5) })]
+            public bool FizzBuzz_Given_A_Number_When_Divisible_By_3_And_By_5(int number)
             {
-                var result = FizzBuzz.Generate(number);
-                Check.That(result)
-                     .Equals("FizzBuzz");
+                return FizzBuzz.Generate(number) == "FizzBuzz";
+            }
+
+            public static class Multiples
+            {
+                public static class Of3Not5
+                {
+                    public static Arbitrary<int> Int()
+                    {
+                        return Arb.Default.Int32()
+                                  .Filter(And(
+                                      IsDisibleBy(3),
+                                      Not(IsDisibleBy(5))));
+                    }
+                }
+
+                public static class Of5Not3
+                {
+                    public static Arbitrary<int> Int()
+                    {
+                        return Arb.Default.Int32()
+                                  .Filter(And(
+                                      Not(IsDisibleBy(3)),
+                                      IsDisibleBy(5)));
+                    }
+                }
+
+                public static class Of3And5
+                {
+                    public static Arbitrary<int> Int()
+                    {
+                        // Filter not used because too selective (1/15 valid integers)
+                        // Map n => 15*n to have enough valid integers (default: 100/1000)
+                        return Arb.Default.Int32()
+                                  .MapFilter(n => n * 3 * 5, _ => true);
+                    }
+                }
+
+                public static class Others
+                {
+                    public static Arbitrary<int> Int()
+                    {
+                        return Arb.Default.Int32()
+                                  .Filter(And(
+                                      Not(IsDisibleBy(3)),
+                                      Not(IsDisibleBy(5))));
+                    }
+                }
+            }
+
+            public static Func<int, bool> And(Func<int, bool> predicate1, Func<int, bool> predicate2)
+            {
+                return n => predicate1(n) && predicate2(n);
+            }
+
+            public static Func<int, bool> Not(Func<int, bool> predicate)
+            {
+                return n => !predicate(n);
+            }
+
+            public static Func<int, bool> IsDisibleBy(int dividor)
+            {
+                return n => n % dividor == 0;
             }
         }
     }
