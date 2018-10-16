@@ -1,25 +1,36 @@
-export function YamsCombinationCalculator(roll: number[], combination: Combination): number {
+interface Combination {
+    computeResult(roll: number[]): number
+}
 
-    if (combination === Combination.Twos) {
-        const onlyTwos = roll.filter(diceIsTwo)
+export class OnesCombination implements Combination {
+    computeResult(roll: number[]): number {
+        const onlyOnes = roll.filter(diceIsOne);
 
-        return onlyTwos.length * 2;
-    }
+        return onlyOnes.length;
 
-    const onlyOnes = roll.filter(diceIsOne);
-
-    return onlyOnes.length;
-
-    function diceIsOne(dice: number) {
-        return dice === 1;
-    }
-
-    function diceIsTwo(dice: number) {
-        return dice === 2;
+        function diceIsOne(dice: number) {
+            return dice === 1;
+        }
     }
 }
 
-export enum Combination {
-    Ones,
-    Twos,
+export class TwosCombination implements Combination {
+    computeResult(roll: number[]): number {
+        const onlyTwos = roll.filter(diceIsTwo)
+
+        return onlyTwos.length * 2;
+
+        function diceIsTwo(dice: number) {
+            return dice === 2;
+        }
+    }
+}
+
+export class Combinations {
+    static Ones: Combination = new OnesCombination();
+    static Twos: Combination = new TwosCombination();
+}
+
+export function YamsCombinationCalculator(roll: number[], combination: Combination): number {
+    return combination.computeResult(roll);
 }
