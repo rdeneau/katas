@@ -4,7 +4,7 @@ Provides an empty TypeScript / Node project to start a coding kata.
 
 ## Instructions
 
-- Run once `npm install` or `yarn`
+- Run once `npm install`
 - Write your code in the `src` folder.
   - Unit tests are written in `.spec.ts` files.
   - Unit tests are written using [chai](http://chaijs.com) assertion library.

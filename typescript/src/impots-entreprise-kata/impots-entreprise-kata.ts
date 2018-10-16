@@ -4,6 +4,7 @@ export abstract class TypeEntreprise {
 }
 
 export class AutoEntreprise extends TypeEntreprise {
+
     getTauxImposition(): number {
         return 25 / 100;
     }
