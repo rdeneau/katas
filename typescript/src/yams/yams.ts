@@ -31,10 +31,36 @@ export class ThreesCombination implements Combination {
     }
 }
 
+export class ThreeOfAKindCombination implements Combination {
+    getResultFor(roll: number[]): number {
+        const dicesOccurences = getDicesOccurences(roll);
+        const kind = dicesOccurences.findIndex(dice => dice >= 3) + 1;
+
+        return kind * 3;
+    }
+}
+
+class FourOfAKindCombination implements Combination {
+    getResultFor(roll: number[]): number {
+        const dicesOccurences = getDicesOccurences(roll);
+        const kind = dicesOccurences.findIndex(dice => dice >= 4) + 1;
+
+        return kind * 4;
+    }
+}
+
+function getDicesOccurences(roll: number[]): number[] {
+    const occurences = [ 0, 0, 0, 0, 0, 0 ];
+    roll.forEach(dice => occurences[dice - 1]++);
+    return occurences;
+}
+
 export class Combinations {
     static Ones: Combination = new OnesCombination();
     static Twos: Combination = new TwosCombination();
     static Threes: Combination = new ThreesCombination();
+    static ThreeOfAKind: Combination = new ThreeOfAKindCombination();
+    static FourOfAKind: Combination = new FourOfAKindCombination();
 }
 
 export function YamsCombinationCalculator(roll: number[], combination: Combination): number {
