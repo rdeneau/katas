@@ -1,4 +1,10 @@
-export function YamsCombinationCalculator(roll: number[], Ones: any): number {
+export function YamsCombinationCalculator(roll: number[], combination: Combination): number {
+
+    if (combination === Combination.Twos) {
+        const onlyTwos = roll.filter(diceIsTwo)
+
+        return onlyTwos.length * 2;
+    }
 
     const onlyOnes = roll.filter(diceIsOne);
 
@@ -7,8 +13,13 @@ export function YamsCombinationCalculator(roll: number[], Ones: any): number {
     function diceIsOne(dice: number) {
         return dice === 1;
     }
+
+    function diceIsTwo(dice: number) {
+        return dice === 2;
+    }
 }
 
-export enum Combinations {
-    Ones
+export enum Combination {
+    Ones,
+    Twos,
 }

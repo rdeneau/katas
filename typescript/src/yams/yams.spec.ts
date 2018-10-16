@@ -2,7 +2,7 @@
 import {should} from 'chai';
 
 import {
-    Combinations,
+    Combination,
     YamsCombinationCalculator
 } from './yams';
 
@@ -14,7 +14,7 @@ describe('YamsCombinationCalculatorShould', () => {
         const roll = [1, 0, 0, 0, 0];
         const expected = 1;
 
-        YamsCombinationCalculator(roll, Combinations.Ones)
+        YamsCombinationCalculator(roll, Combination.Ones)
             .should.equal(expected);
     })
 
@@ -22,7 +22,7 @@ describe('YamsCombinationCalculatorShould', () => {
         const roll = [1, 1, 0, 0, 0];
         const expected = 2;
 
-        YamsCombinationCalculator(roll, Combinations.Ones)
+        YamsCombinationCalculator(roll, Combination.Ones)
             .should.equal(expected);
     })
 
@@ -30,7 +30,15 @@ describe('YamsCombinationCalculatorShould', () => {
         const roll = [1, 1, 1, 1, 1];
         const expected = 5;
 
-        YamsCombinationCalculator(roll, Combinations.Ones)
+        YamsCombinationCalculator(roll, Combination.Ones)
+            .should.equal(expected);
+    })
+
+    it('return two when doing one two on "Twos"', () => {
+        const roll = [2, 0, 0, 0, 0];
+        const expected = 2;
+
+        YamsCombinationCalculator(roll, Combination.Twos)
             .should.equal(expected);
     })
 });
