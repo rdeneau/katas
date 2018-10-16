@@ -41,4 +41,20 @@ describe('YamsCombinationCalculatorShould', () => {
         YamsCombinationCalculator(roll, Combinations.Twos)
             .should.equal(expected);
     })
+
+    it('return four when doing two two on "Twos"', () => {
+        const roll = [2, 2, 0, 0, 0];
+        const expected = 4;
+
+        YamsCombinationCalculator(roll, Combinations.Twos)
+            .should.equal(expected);
+    })
+
+    it('return three when doing one three on "Threes"', () => {
+        const roll = [3, 0, 0, 0, 0];
+        const expected = 3;
+
+        YamsCombinationCalculator(roll, Combinations.Threes)
+            .should.equal(expected);
+    })
 });
